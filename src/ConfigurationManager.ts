@@ -20,6 +20,30 @@ class ConfigurationManager {
     public static getBaseUrl(): string | undefined {
         return workspace.getConfiguration('codexLens').get<string>('baseUrl');
     }
+
+    /**
+     * 获取模型配置
+     * @returns 模型名称字符串，默认为 claude-3-5-haiku-20241022
+     */
+    public static getModel(): string {
+        return workspace.getConfiguration('codexLens').get<string>('model', 'claude-3-5-haiku-20241022');
+    }
+
+    /**
+     * 获取最大 Token 数配置
+     * @returns 最大 Token 数，默认为 1000
+     */
+    public static getMaxTokens(): number {
+        return workspace.getConfiguration('codexLens').get<number>('maxTokens', 1000);
+    }
+
+    /**
+     * 获取温度配置
+     * @returns 温度值，默认为 0.7
+     */
+    public static getTemperature(): number {
+        return workspace.getConfiguration('codexLens').get<number>('temperature', 0.7);
+    }
 }
 
 export default ConfigurationManager;

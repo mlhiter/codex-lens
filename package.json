@@ -12,7 +12,35 @@
   ],
   "activationEvents": [
     "onLanguage:javascript",
-    "onLanguage:typescript"
+    "onLanguage:typescript",
+    "onLanguage:python",
+    "onLanguage:java",
+    "onLanguage:csharp",
+    "onLanguage:cpp",
+    "onLanguage:c",
+    "onLanguage:go",
+    "onLanguage:rust",
+    "onLanguage:php",
+    "onLanguage:ruby",
+    "onLanguage:kotlin",
+    "onLanguage:swift",
+    "onLanguage:scala",
+    "onLanguage:dart",
+    "onLanguage:r",
+    "onLanguage:julia",
+    "onLanguage:lua",
+    "onLanguage:perl",
+    "onLanguage:shell",
+    "onLanguage:powershell",
+    "onLanguage:sql",
+    "onLanguage:html",
+    "onLanguage:css",
+    "onLanguage:scss",
+    "onLanguage:less",
+    "onLanguage:vue",
+    "onLanguage:react",
+    "onLanguage:jsx",
+    "onLanguage:tsx"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -28,6 +56,23 @@
           "type": "string",
           "default": "",
           "description": "The base URL for the LLM service (e.g., 'https://api.anthropic.com')."
+        },
+        "codexLens.model": {
+          "type": "string",
+          "default": "claude-3-5-haiku-20241022",
+          "description": "The model to use for code explanations (e.g., 'claude-3-5-haiku-20241022', 'gpt-4', 'gpt-3.5-turbo')."
+        },
+        "codexLens.maxTokens": {
+          "type": "number",
+          "default": 1000,
+          "description": "Maximum number of tokens for the response."
+        },
+        "codexLens.temperature": {
+          "type": "number",
+          "default": 0.7,
+          "minimum": 0,
+          "maximum": 2,
+          "description": "Temperature for the model response (0-2, where 0 is deterministic and 2 is very random)."
         }
       }
     }

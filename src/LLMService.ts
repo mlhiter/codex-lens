@@ -12,6 +12,12 @@ export interface ApiContext {
     apiName: string;
     /** 代码行内容 */
     codeLine: string;
+    /** 周围代码行 */
+    surroundingCode: string[];
+    /** 相关导入语句 */
+    imports: string[];
+    /** 函数上下文 */
+    functionContext: string | null;
 }
 
 /**
@@ -25,20 +31,51 @@ class LLMService {
      * @returns 精心设计的 Prompt 字符串
      */
     private static buildPrompt(context: ApiContext): string {
-        return `你是一位资深的 ${context.language} 开发专家。请分析以下代码中的 API 调用：
+        let prompt = `你是一位资深的 ${context.language} 开发专家。请分析以下代码中的 API 调用：
 
-**代码行：** \`${context.codeLine}\`
 **API 名称：** ${context.apiName}
 **编程语言：** ${context.language}
 
-请提供以下信息：
+**当前代码行：** \`${context.codeLine}\`
+
+**周围代码上下文：**
+\`\`\`${context.language}
+${context.surroundingCode.join('\n')}
+\`\`\``;
+
+        // 添加导入语句信息（如果有）
+        if (context.imports.length > 0) {
+            prompt += `
+
+**相关导入语句：**
+\`\`\`${context.language}
+${context.imports.join('\n')}
+\`\`\``;
+        }
+
+        // 添加函数上下文信息（如果有）
+        if (context.functionContext) {
+            prompt += `
+
+**函数上下文：**
+\`\`\`${context.language}
+${context.functionContext}
+\`\`\``;
+        }
+
+        prompt += `
+
+请基于以上完整的代码上下文，提供以下信息：
 
 1. **API 核心功能**：简洁地解释这个 API 的主要用途和功能
-2. **参数说明**：如果有参数，请解释每个参数的作用
+2. **参数说明**：如果有参数，请解释每个参数的作用和类型
 3. **返回值**：说明 API 的返回值类型和含义
-4. **使用示例**：提供一个清晰、实用的代码示例
+4. **使用示例**：基于当前上下文，提供一个相关的实用代码示例
+5. **注意事项**：如果有需要注意的地方（如异常处理、性能考虑等）
 
 请以 Markdown 格式返回，保持简洁明了，重点突出实用性。`;
+
+        return prompt;
     }
 
     /**
@@ -51,6 +88,9 @@ class LLMService {
             // 获取配置
             const apiKey = ConfigurationManager.getApiKey();
             const baseUrl = ConfigurationManager.getBaseUrl();
+            const model = ConfigurationManager.getModel();
+            const maxTokens = ConfigurationManager.getMaxTokens();
+            const temperature = ConfigurationManager.getTemperature();
 
             // 检查配置是否完整
             if (!apiKey || !baseUrl) {
@@ -65,7 +105,7 @@ class LLMService {
             const response = await axios.post(
                 `${baseUrl}/chat/completions`,
                 {
-                    model: 'claude-3-5-sonnet-20240620',
+                    model: model,
                     messages: [
                         {
                             role: 'user',
@@ -73,8 +113,8 @@ class LLMService {
                         }
                     ],
                     stream: false,
-                    max_tokens: 1000,
-                    temperature: 0.7
+                    max_tokens: maxTokens,
+                    temperature: temperature
                 },
                 {
                     headers: {
