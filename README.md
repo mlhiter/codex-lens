@@ -1,71 +1,112 @@
-# codex-lens README
+# Codex Lens
 
-This is the README for your extension "codex-lens". After writing up a brief description, we recommend including the following sections.
+🚀 **Intelligent Code Explanations at Your Fingertips**
 
-## Features
+Codex Lens is a powerful VS Code extension that provides AI-powered code explanations and insights directly in your editor. Simply hover over any API, function, or code element to get instant, contextual explanations powered by advanced language models.
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+## ✨ Features
 
-For example if there is an image subfolder under your extension project workspace:
+- **🔍 Intelligent Hover Explanations**: Get detailed explanations of APIs, functions, and code elements by simply hovering over them
+- **🌍 Multi-Language Support**: Works with 20+ programming languages including JavaScript, TypeScript, Python, Java, Go, Rust, C++, and more
+- **🧠 Context-Aware Analysis**: Analyzes surrounding code, imports, and function context for accurate explanations
+- **⚡ Real-time Processing**: Fast, responsive AI-powered analysis with request caching to avoid duplicates
+- **🛠️ Flexible LLM Integration**: Compatible with various language models (Claude, GPT-4, etc.) via OpenAI-compatible APIs
+- **📝 Rich Markdown Output**: Beautiful, formatted explanations with syntax highlighting and structured information
 
-\!\[feature X\]\(images/feature-x.png\)
+### What You Get in Each Explanation:
+- **API Core Functionality**: Clear explanation of the main purpose and features
+- **Parameter Details**: Type and purpose of each parameter
+- **Return Values**: Description of what the API returns
+- **Usage Examples**: Practical code examples based on your context
+- **Best Practices**: Important considerations, error handling, and performance tips
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## 📋 Requirements
 
-## Requirements
+- VS Code version 1.91.0 or higher
+- An API key for a compatible language model service (Claude, OpenAI, etc.)
+- Internet connection for API calls
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## ⚙️ Extension Settings
 
-## Extension Settings
+Configure Codex Lens through VS Code settings (`Cmd/Ctrl + ,`):
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+| Setting | Type | Default | Description |
+|---------|------|---------|-------------|
+| `codexLens.apiKey` | string | `""` | Your API key for the LLM service |
+| `codexLens.baseUrl` | string | `""` | Base URL for the LLM service (e.g., `https://api.anthropic.com`) |
+| `codexLens.model` | string | `claude-3-5-haiku-20241022` | Model to use for explanations |
+| `codexLens.maxTokens` | number | `1000` | Maximum tokens for the response |
+| `codexLens.temperature` | number | `0.7` | Response creativity (0-2, where 0 is deterministic) |
 
-For example:
+## 🚀 Quick Start
 
-This extension contributes the following settings:
+1. **Install the Extension**: Install Codex Lens from the VS Code marketplace
+2. **Configure API Settings**:
+   - Open VS Code settings (`Cmd/Ctrl + ,`)
+   - Search for "Codex Lens"
+   - Set your `apiKey` and `baseUrl`
+3. **Start Using**: Simply hover over any code element in supported languages to get instant explanations!
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+### Example Configuration:
 
-## Known Issues
+```json
+{
+    "codexLens.apiKey": "your-api-key-here",
+    "codexLens.baseUrl": "https://api.anthropic.com",
+    "codexLens.model": "claude-3-5-haiku-20241022",
+    "codexLens.maxTokens": 1000,
+    "codexLens.temperature": 0.7
+}
+```
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+## 🔧 Supported Languages
 
-## Release Notes
+Codex Lens works with a wide range of programming languages:
 
-Users appreciate release notes as you update your extension.
+- **Web Development**: JavaScript, TypeScript, HTML, CSS, SCSS, Less, Vue, React, JSX, TSX
+- **Backend Languages**: Python, Java, C#, Go, Rust, PHP, Ruby, Kotlin, Swift, Scala
+- **Systems Languages**: C, C++
+- **Data & Scripting**: R, Julia, Lua, Perl, SQL
+- **Shell Scripting**: Shell, PowerShell
+- **Mobile Development**: Dart (Flutter), Swift, Kotlin
 
-### 1.0.0
+## 🎯 How It Works
 
-Initial release of ...
+1. **Context Detection**: When you hover over code, Codex Lens analyzes the surrounding context
+2. **Smart Parsing**: Extracts relevant information including imports, function context, and code structure
+3. **AI Processing**: Sends the context to your configured language model for analysis
+4. **Rich Display**: Shows formatted explanations with syntax highlighting and structured information
 
-### 1.0.1
+## 🐛 Known Issues
 
-Fixed issue #.
+- First-time API calls may take a few seconds depending on your LLM service response time
+- Some complex code patterns may require additional context for optimal explanations
+- Network connectivity issues may prevent explanations from loading
 
-### 1.1.0
+## 📈 Release Notes
 
-Added features X, Y, and Z.
+### 0.0.1
+
+- Initial release of Codex Lens
+- Multi-language hover explanations
+- Configurable LLM integration
+- Context-aware code analysis
+- Request caching and error handling
+
+## 🤝 Contributing
+
+We welcome contributions! Please feel free to submit issues, feature requests, or pull requests.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgments
+
+- Built with the VS Code Extension API
+- Powered by advanced language models
+- Inspired by the need for better code understanding tools
 
 ---
 
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+**Happy Coding with Codex Lens! 🚀**
