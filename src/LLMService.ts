@@ -1,0 +1,105 @@
+import axios from 'axios';
+import ConfigurationManager from './ConfigurationManager';
+
+/**
+ * API 上下文接口
+ * 包含从用户代码中提取的上下文信息
+ */
+export interface ApiContext {
+    /** 编程语言 */
+    language: string;
+    /** API 名称 */
+    apiName: string;
+    /** 代码行内容 */
+    codeLine: string;
+}
+
+/**
+ * LLM 服务类
+ * 负责与外部 LLM API 进行通信，提供代码解释功能
+ */
+class LLMService {
+    /**
+     * 构建用于 LLM 的 Prompt
+     * @param context API 上下文信息
+     * @returns 精心设计的 Prompt 字符串
+     */
+    private static buildPrompt(context: ApiContext): string {
+        return `你是一位资深的 ${context.language} 开发专家。请分析以下代码中的 API 调用：
+
+**代码行：** \`${context.codeLine}\`
+**API 名称：** ${context.apiName}
+**编程语言：** ${context.language}
+
+请提供以下信息：
+
+1. **API 核心功能**：简洁地解释这个 API 的主要用途和功能
+2. **参数说明**：如果有参数，请解释每个参数的作用
+3. **返回值**：说明 API 的返回值类型和含义
+4. **使用示例**：提供一个清晰、实用的代码示例
+
+请以 Markdown 格式返回，保持简洁明了，重点突出实用性。`;
+    }
+
+    /**
+     * 获取代码解释
+     * @param context API 上下文信息
+     * @returns Promise，成功时返回解释文本，失败时返回 null
+     */
+    public static async getExplanation(context: ApiContext): Promise<string | null> {
+        try {
+            // 获取配置
+            const apiKey = ConfigurationManager.getApiKey();
+            const baseUrl = ConfigurationManager.getBaseUrl();
+
+            // 检查配置是否完整
+            if (!apiKey || !baseUrl) {
+                console.error('Codex Lens: API Key 或 Base URL 未配置。请在设置中配置 codexLens.apiKey 和 codexLens.baseUrl');
+                return null;
+            }
+
+            // 构建 Prompt
+            const prompt = this.buildPrompt(context);
+
+            // 构建请求
+            const response = await axios.post(
+                `${baseUrl}/messages`,
+                {
+                    model: 'claude-3-5-sonnet-latest',
+                    max_tokens: 1000,
+                    messages: [
+                        {
+                            role: 'user',
+                            content: prompt
+                        }
+                    ]
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': apiKey,
+                        'anthropic-version': '2023-06-01'
+                    }
+                }
+            );
+
+            // 解析响应
+            if (response.data && response.data.content && response.data.content.length > 0) {
+                return response.data.content[0].text;
+            } else {
+                console.error('Codex Lens: API 响应格式异常', response.data);
+                return null;
+            }
+
+        } catch (error) {
+            console.error('Codex Lens: 调用 LLM API 时发生错误:', error);
+            if (axios.isAxiosError(error)) {
+                console.error('HTTP 状态码:', error.response?.status);
+                console.error('错误响应:', error.response?.data);
+            }
+            return null;
+        }
+    }
+}
+
+export default LLMService;
