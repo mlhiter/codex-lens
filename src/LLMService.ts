@@ -63,29 +63,30 @@ class LLMService {
 
             // 构建请求
             const response = await axios.post(
-                `${baseUrl}/messages`,
+                `${baseUrl}/chat/completions`,
                 {
-                    model: 'claude-3-5-sonnet-latest',
-                    max_tokens: 1000,
+                    model: 'claude-3-5-sonnet-20240620',
                     messages: [
                         {
                             role: 'user',
                             content: prompt
                         }
-                    ]
+                    ],
+                    stream: false,
+                    max_tokens: 1000,
+                    temperature: 0.7
                 },
                 {
                     headers: {
                         'Content-Type': 'application/json',
-                        'x-api-key': apiKey,
-                        'anthropic-version': '2023-06-01'
+                        'Authorization': `Bearer ${apiKey}`
                     }
                 }
             );
 
             // 解析响应
-            if (response.data && response.data.content && response.data.content.length > 0) {
-                return response.data.content[0].text;
+            if (response.data && response.data.choices && response.data.choices.length > 0) {
+                return response.data.choices[0].message.content;
             } else {
                 console.error('Codex Lens: API 响应格式异常', response.data);
                 return null;

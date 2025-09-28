@@ -1,15 +1,19 @@
 {
   "name": "codex-lens",
   "displayName": "Codex Lens",
-  "description": "",
+  "description": "A VSCode extension that provides intelligent code explanations and insights",
   "version": "0.0.1",
+  "publisher": "mlhiter",
   "engines": {
-    "vscode": "^1.104.0"
+    "vscode": "^1.91.0"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onLanguage:javascript",
+    "onLanguage:typescript"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "configuration": {

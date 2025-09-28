@@ -10,6 +10,4 @@
 	},
 	// Turn off tsc task auto detection since we have the necessary tasks as npm scripts
 	"typescript.tsc.autoDetect": "off",
-  "codexLens.apiKey":"sk-8xoAjEKQhiYBy61r427b7eCa4731456c9fC62906E6C912Fe",
-  "codexLens.baseUrl":"https://aiproxy.usw.sealos.io/v1"
 }

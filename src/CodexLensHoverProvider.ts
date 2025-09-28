@@ -26,38 +26,38 @@ class CodexLensHoverProvider implements HoverProvider {
         position: Position,
         token: CancellationToken
     ): Promise<Hover | null | undefined> {
-        // 从文档和位置提取上下文
+
         const context = ContextParser.getApiContext(document, position);
 
-        // 如果没有找到上下文，返回 null
         if (!context) {
+            console.log('Codex Lens: No context found');
             return null;
         }
 
-        // 检查是否请求了取消操作
         if (token.isCancellationRequested) {
             return null;
         }
 
-        // 从 LLM 服务获取解释
-        const explanation = await LLMService.getExplanation(context);
+        try {
+            const explanation = await LLMService.getExplanation(context);
 
-        // 异步调用后检查是否请求了取消操作
-        if (token.isCancellationRequested) {
+            if (token.isCancellationRequested) {
+                return null;
+            }
+
+            if (!explanation) {
+                console.log('Codex Lens: No explanation received from LLM service');
+                return null;
+            }
+
+            const markdownString = new MarkdownString(explanation);
+            markdownString.isTrusted = true;
+
+            return new Hover(markdownString);
+        } catch (error) {
+            console.error('Codex Lens: Error in provideHover:', error);
             return null;
         }
-
-        // 如果服务返回 null 或空字符串，返回 null
-        if (!explanation) {
-            return null;
-        }
-
-        // 创建受信任的 MarkdownString 以支持富文本渲染
-        const markdownString = new MarkdownString(explanation);
-        markdownString.isTrusted = true;
-
-        // 返回包含解释的悬停对象
-        return new Hover(markdownString);
     }
 }
 
