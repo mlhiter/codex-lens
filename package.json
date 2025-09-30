@@ -3,6 +3,11 @@
   "displayName": "Codex Lens",
   "description": "A VSCode extension that provides intelligent code explanations and insights",
   "version": "0.0.1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mlhiter/codex-lens"
+  },
   "publisher": "mlhiter",
   "engines": {
     "vscode": "^1.91.0"
@@ -91,7 +96,7 @@
   "devDependencies": {
     "@types/mocha": "^10.0.10",
     "@types/node": "22.x",
-    "@types/vscode": "^1.104.0",
+    "@types/vscode": "^1.91.0",
     "@typescript-eslint/eslint-plugin": "^8.42.0",
     "@typescript-eslint/parser": "^8.42.0",
     "@vscode/test-cli": "^0.0.11",
